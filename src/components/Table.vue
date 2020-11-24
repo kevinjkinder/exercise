@@ -5,7 +5,7 @@
       indeterminate
       size="50px"
       class="q-ma-md"
-      v-if="planets.length === 0"
+      v-if="data.length === 0"
     />
     <table id="table" style="max-height: 10vh">
       <tr>
@@ -15,20 +15,33 @@
           </div>
         </th>
       </tr>
-      <tr v-for="(planet, index) in planets" :key="index">
-        <td v-for="(prop, index) in planet" :key="index">{{ prop }}
-          <q-tooltip v-if="(typeof prop === 'object' || prop.length > 10)">
+      <tr v-for="(planet, index) in chunks[page - 1]" :key="index">
+        <td v-for="(prop, index) in planet" :key="index">
+          <div v-if="typeof prop === 'object'">{{ prop.length }}</div>
+          <div v-if="typeof prop !== 'object'">{{ prop }}</div>
+          <q-tooltip v-if="(prop.length > 10)">
           {{ prop }}
           </q-tooltip>
         </td>
       </tr>
     </table>
+    <div class="row q-py-lg q-gutter-x-md">
+      <q-pagination
+      v-model="page"
+      color="white"
+      text-color="black"
+      :max="chunks.length"
+      :boundary-links="true"
+      v-if="data.length !== 0"
+    >
+    </q-pagination>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref } from '@vue/composition-api'
-import { sortBy } from '../js/table'
+import { computed, ref } from '@vue/composition-api'
+import { sortBy, chunk } from '../js/table'
 export default {
   name: 'Table',
   props: {
@@ -43,12 +56,20 @@ export default {
   },
   setup (props, context) {
     const lastSorted = ref('')
+    const field = ref('')
+    const data = computed(() => sortBy(props.planets, field.value))
+    const chunks = computed(() => chunk(props.planets, 10))
+    const page = ref(1)
 
-    function sort (field) {
-      field !== lastSorted.value ? props.planets = sortBy(props.planets, field) : props.planets.reverse()
-      lastSorted.value = field
+    function sort (fl) {
+      field.value = fl
+      lastSorted.value = fl
     }
-    return { sortBy, sort, lastSorted }
+
+    function changePage (pg) {
+      page.value = pg
+    }
+    return { sortBy, sort, lastSorted, data, chunks, page, changePage }
   }
 }
 </script>
@@ -63,7 +84,8 @@ export default {
 td, th {
   border: 1px solid #ddd;
   padding: 8px;
-  max-width: 140px;
+  max-width: 130px;
+  min-width: 130px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

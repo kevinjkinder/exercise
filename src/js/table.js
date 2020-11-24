@@ -11,7 +11,13 @@ function compareNumbers (prop) {
       return 1
     } else if (isNaN(b[prop])) {
       return -1
-    } else return parseInt(a[prop]) - parseInt(b[prop])
+    } else return parseFloat(a[prop]) - parseFloat(b[prop])
+  }
+}
+
+function compareLength (prop) {
+  return function (a, b) {
+    return a[prop].length - b[prop].length
   }
 }
 
@@ -22,8 +28,21 @@ function compareStrings (prop) {
 }
 
 export function sortBy (arr, prop) {
-  numberProps.includes(prop) ? arr.sort(compareNumbers(prop)) : arr.sort(compareStrings(prop))
+  console.log('start')
+  numberProps.includes(prop) ? arr.sort(compareNumbers(prop)) : ((prop === 'residents' || prop === 'films') ? arr.sort(compareLength(prop)) : arr.sort(compareStrings(prop)))
   return arr
+}
+export function chunk (array, size) {
+  const chunkedArr = []
+  for (let i = 0; i < array.length; i++) {
+    const last = chunkedArr[chunkedArr.length - 1]
+    if (!last || last.length === size) {
+      chunkedArr.push([array[i]])
+    } else {
+      last.push(array[i])
+    }
+  }
+  return chunkedArr
 }
 
 export function makeColumns (keys) {

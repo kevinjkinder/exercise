@@ -9,7 +9,9 @@ export async function getPlanets () {
   while (!done) {
     var data = (await axios.get(`${planetsUrl}${page++}`)).data
     arr.push(...data.results)
+    arr.pop()
     !data.next ? done = true : done = false
   }
+  arr.forEach(function (item) { delete item.url })
   return arr
 }
