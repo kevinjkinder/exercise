@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-var planetsUrl = 'http://swapi.dev/api/planets/?page='
+var planetsUrl = 'https://swapi.dev/api/planets/?page='
 
 export async function getPlanets () {
   var page = 1
