@@ -1,10 +1,12 @@
+// array of properties names which need to be sorted as numbers and arrays
 const numberProps = ['diameter', 'rotation_period', 'orbital_period', 'surface_water', 'population']
-
+const arrayProps = ['films', 'residents']
+// format prop to label
 function format (str) {
   str = str.charAt(0).toUpperCase() + str.slice(1)
   return str.replace('_', ' ')
 }
-
+// arr.sort compare functions by value (compareNumbers), length (compareLength), alphabetically (compareStrings)
 function compareNumbers (prop) {
   return function (a, b) {
     if (isNaN(a[prop])) {
@@ -26,12 +28,12 @@ function compareStrings (prop) {
     return (a[prop] > b[prop]) ? 1 : ((a[prop] < b[prop]) ? -1 : 0)
   }
 }
-
+// array sort based on property to sort and type of compare function
 export function sortBy (arr, prop) {
-  console.log('start')
-  numberProps.includes(prop) ? arr.sort(compareNumbers(prop)) : ((prop === 'residents' || prop === 'films') ? arr.sort(compareLength(prop)) : arr.sort(compareStrings(prop)))
+  numberProps.includes(prop) ? arr.sort(compareNumbers(prop)) : (arrayProps.includes(prop) ? arr.sort(compareLength(prop)) : arr.sort(compareStrings(prop)))
   return arr
 }
+// return array with subarrays of "size" length
 export function chunk (array, size) {
   const chunkedArr = []
   for (let i = 0; i < array.length; i++) {
@@ -44,7 +46,7 @@ export function chunk (array, size) {
   }
   return chunkedArr
 }
-
+// create array of column objects with prop name and label (function originally created for "Quasar Tables")
 export function makeColumns (keys) {
   var arr = []
   for (let i = 0; i < keys.length; i++) {
