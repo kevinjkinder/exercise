@@ -17,7 +17,7 @@ export async function getPlanets () {
 // get and return residents names or films names of an array of endpoints
 export async function getData (arr) {
   var a = []
-  Promise.all(arr.map(l => axios.get(l))).then(data => {
+  Promise.all(arr.map(link => axios.get(link.replace('http', 'https')))).then(data => {
     data.forEach((obj) => {
       if (obj.data.name) {
         a.push(obj.data.name)
