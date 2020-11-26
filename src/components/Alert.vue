@@ -1,6 +1,5 @@
 <template>
   <div>
-    <q-btn label="123" color="primary"></q-btn>
     <q-dialog v-model="alert" persistent>
       <q-card style="width: 400px">
         <q-card-section>
