@@ -1,6 +1,6 @@
 import 'particles.js'
-export const initParticles = function () {
-  window.particlesJS('particles-js', {
+export const initParticles = function (divId) {
+  window.particlesJS(divId, {
     particles: {
       number: {
         value: 100,

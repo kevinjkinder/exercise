@@ -16,17 +16,20 @@
         </th>
       </tr>
       <tr v-for="(planet, index) in chunks[page - 1]" :key="index">
-        <td v-for="(prop, index) in planet" :key="index">
-          <div v-if="typeof prop === 'object'">{{ prop.length }}</div>
-          <div v-if="typeof prop !== 'object'">{{ prop }}</div>
-          <q-tooltip v-if="(prop.length > 10)">
+        <td v-for="(prop, name) in planet" :key="name">
+          <div v-if="typeof prop === 'object'" class="row items-center justify-center">
+            <div>{{ prop.length }}</div>
+            <q-icon v-if="prop.length !== 0" name="visibility" class="q-px-sm" @mouseover="alert(prop, planet.name, name)"></q-icon>
+          </div>
+          <div v-if="typeof prop !== 'object'" class="text-center">{{ prop }}</div>
+          <q-tooltip v-if="(prop.length > 15)">
           {{ prop }}
           </q-tooltip>
         </td>
       </tr>
     </table>
-    <div class="row q-py-lg q-gutter-x-md">
       <q-pagination
+      class="q-py-md"
       v-model="page"
       color="white"
       text-color="black"
@@ -35,7 +38,6 @@
       v-if="data.length !== 0"
     >
     </q-pagination>
-    </div>
   </div>
 </template>
 
@@ -69,7 +71,11 @@ export default {
     function changePage (pg) {
       page.value = pg
     }
-    return { sortBy, sort, lastSorted, data, chunks, page, changePage }
+
+    function alert (arr, planet, param) {
+      context.emit('alert', { arr: arr, title: `${planet} / ${param}` })
+    }
+    return { sortBy, sort, lastSorted, data, chunks, page, changePage, alert }
   }
 }
 </script>

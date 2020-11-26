@@ -46,7 +46,7 @@ export function chunk (array, size) {
   }
   return chunkedArr
 }
-// create array of column objects with prop name and label (function originally created for "Quasar Tables")
+// create array of column objects with prop name and label
 export function makeColumns (keys) {
   var arr = []
   for (let i = 0; i < keys.length; i++) {
